@@ -8,8 +8,8 @@ createConnection(config)
   .then(async () => {
     const app = (await import('@shared/infra/config/app')).default;
 
-    app.listen(process.env.PORT, () => {
-      console.log('Server listening on PORT:', process.env.PORT);
+    app.listen(process.env.LOCAL_PORT, () => {
+      console.log('Server listening on PORT:', process.env.LOCAL_PORT);
     });
   })
   .catch(console.error);
