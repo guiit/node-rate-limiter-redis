@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { connection } from '../index';
-import { User, UserRole } from '@modules/users/infra/typeorm/entities/User';
+import { UserRole } from '@modules/users/infra/typeorm/entities/User';
 import { CreateUserService } from '@modules/users/services/user/CreateUserService';
 import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
 let userRepository: UserRepository, createUserService: CreateUserService;
