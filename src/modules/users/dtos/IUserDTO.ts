@@ -1,5 +1,3 @@
-import { UserRole } from '@modules/users/infra/typeorm/entities/User';
-
 export {
   ICreateUserDTO,
   IUpdateUserDTO,
@@ -10,7 +8,6 @@ export {
 
 interface ICreateUserDTO {
   name: string;
-  user_type: UserRole;
   phone?: string;
   cpf?: string;
   email: string;
@@ -21,7 +18,6 @@ interface ICreateUserDTO {
 
 interface IUpdateUserDTO {
   name?: string;
-  user_type?: UserRole;
   phone?: string;
   cpf?: string;
   email?: string;

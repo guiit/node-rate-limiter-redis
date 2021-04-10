@@ -1,7 +1,8 @@
-import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
-import { User } from '@modules/users/infra/typeorm/entities/User';
+import bcrypt from 'bcryptjs';
+import { injectable, inject } from 'tsyringe';
 import { IUpdateUserDTO } from '@modules/users/dtos/IUserDTO';
+import { User } from '@modules/users/infra/typeorm/entities/User';
 import IUserRepository from '@modules/users/repositories/IUserRepository';
 
 @injectable()
@@ -29,6 +30,10 @@ export class UpdateUserService {
           throw new AppError('This cpf already belongs to another user!');
       }
     }
+    if (data.password) {
+      data.password = bcrypt.hashSync(data.password, 8);
+    }
+
     delete data.confirmPassword;
     const user = await this.userRepository.update(
       Object.assign({}, userExists, data)
