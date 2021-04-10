@@ -1,3 +1,4 @@
+import { redisClient } from '@shared/infra/middlewares/rateLimiter';
 import { createConnection, getConnection } from 'typeorm';
 import config from './ormconfig';
 
@@ -8,6 +9,7 @@ const connection = {
 
   async close() {
     await getConnection().close();
+    redisClient.quit();
   },
 
   async clear() {

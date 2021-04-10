@@ -2,7 +2,7 @@ import { verify, decode } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import AppError from '@shared/errors/AppError';
 
-export default function verifyToken(
+export function authentication(
   request: Request,
   response: Response,
   next: NextFunction
