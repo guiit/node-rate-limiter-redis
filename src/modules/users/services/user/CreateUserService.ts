@@ -1,5 +1,6 @@
-import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
+import bcrypt from 'bcryptjs';
+import { injectable, inject } from 'tsyringe';
 import { User } from '@modules/users/infra/typeorm/entities/User';
 import { ICreateUserDTO } from '@modules/users/dtos/IUserDTO';
 import IUserRepository from '@modules/users/repositories/IUserRepository';
@@ -20,6 +21,7 @@ export class CreateUserService {
       const cpfExists = await this.userRepository.findByCpf(data.cpf);
       if (cpfExists) throw new AppError('CPF already belongs to another user!');
     }
+    data.password = bcrypt.hashSync(data.password, 8);
 
     const user = await this.userRepository.create(data);
 

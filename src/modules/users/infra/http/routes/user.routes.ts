@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
-import { UserRole } from '@modules/users/infra/typeorm/entities/User';
 import UserController from '@modules/users/infra/http/controllers/UserController';
 
 export default (router: Router): void => {
@@ -14,9 +13,6 @@ export default (router: Router): void => {
       celebrate({
         [Segments.BODY]: {
           name: Joi.string().required(),
-          user_type: Joi.string()
-            .required()
-            .valid(UserRole.ADMIN, UserRole.NORMAL),
           phone: Joi.string(),
           cpf: Joi.string().length(14),
           email: Joi.string().email().required(),
@@ -58,7 +54,6 @@ export default (router: Router): void => {
         [Segments.BODY]: Joi.object()
           .keys({
             name: Joi.string(),
-            user_type: Joi.string().valid(UserRole.ADMIN, UserRole.NORMAL),
             phone: Joi.string(),
             cpf: Joi.string().length(14),
             email: Joi.string().email(),

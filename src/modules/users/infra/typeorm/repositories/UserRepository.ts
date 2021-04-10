@@ -26,11 +26,10 @@ export default class UserRepository implements IUserRepository {
     return user;
   }
 
-  public async delete({ user_id }: IGetUserDTO): Promise<number | undefined> {
-    const result = await this.ormRepository.softDelete(user_id);
-    const isUserAffected = result.affected;
+  public async delete(userEntity: User): Promise<User> {
+    const user = await this.ormRepository.remove(userEntity);
 
-    return isUserAffected;
+    return user;
   }
 
   public async findOne({ user_id }: IGetUserDTO): Promise<User | undefined> {
@@ -46,7 +45,10 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({ email });
+    const user = await this.ormRepository.findOne(
+      { email },
+      { select: ['user_id', 'password'] }
+    );
 
     return user;
   }
@@ -54,25 +56,5 @@ export default class UserRepository implements IUserRepository {
     const users = await this.ormRepository.find(query);
 
     return users;
-  }
-
-  public async findDeletedUser({
-    user_id
-  }: IGetUserDTO): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: { user_id },
-      withDeleted: true
-    });
-
-    return user;
-  }
-
-  public async isEmailRegistered(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({
-      where: { email },
-      select: ['user_id', 'password', 'user_type']
-    });
-
-    return user;
   }
 }

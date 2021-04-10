@@ -1,6 +1,5 @@
 import AppError from '@shared/errors/AppError';
 import { connection } from '../index';
-import { UserRole } from '@modules/users/infra/typeorm/entities/User';
 import { CreateUserService } from '@modules/users/services/user/CreateUserService';
 import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
 
@@ -11,7 +10,6 @@ const userSchema = {
   password: 'any_password',
   confirmPassword: 'any_password',
   email: 'any_email@email.com',
-  user_type: UserRole.ADMIN,
   cpf: '501.841.201-99'
 };
 
@@ -67,8 +65,7 @@ describe('Should validate create user service', () => {
       email: 'another_email',
       cpf: '12345678912345',
       name: 'any_name',
-      password: expect.anything(),
-      user_type: UserRole.ADMIN
+      password: expect.anything()
     });
 
     expect(user).toEqual(result);

@@ -1,12 +1,8 @@
-import { injectable, inject } from 'tsyringe';
-
-import IUserRepository from '@modules/users/repositories/IUserRepository';
-
-import { User } from '@modules/users/infra/typeorm/entities/User';
-
-import { IGetUserDTO } from '@modules/users/dtos/IUserDTO';
-
 import AppError from '@shared/errors/AppError';
+import { injectable, inject } from 'tsyringe';
+import { IGetUserDTO } from '@modules/users/dtos/IUserDTO';
+import { User } from '@modules/users/infra/typeorm/entities/User';
+import IUserRepository from '@modules/users/repositories/IUserRepository';
 
 @injectable()
 export class DeleteUserService {
@@ -19,13 +15,7 @@ export class DeleteUserService {
     const userExists = await this.userRepository.findOne({ user_id });
     if (!userExists) throw new AppError('User does not exist!');
 
-    const isUserDeleted = await this.userRepository.delete({ user_id });
-    if (!isUserDeleted)
-      throw new AppError('Something went wrong! User has not been deleted!');
-
-    const user = await this.userRepository.findDeletedUser({ user_id });
-    if (!user)
-      throw new AppError('Something went wrong! User has not been found!');
+    const user = await this.userRepository.delete(userExists);
 
     return user;
   }
