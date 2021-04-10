@@ -3,6 +3,7 @@ import { connection } from '../index';
 import { UserRole } from '@modules/users/infra/typeorm/entities/User';
 import { CreateUserService } from '@modules/users/services/user/CreateUserService';
 import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
+
 let userRepository: UserRepository, createUserService: CreateUserService;
 
 const userSchema = {
@@ -13,6 +14,7 @@ const userSchema = {
   user_type: UserRole.ADMIN,
   cpf: '501.841.201-99'
 };
+
 describe('Should validate create user service', () => {
   beforeAll(async () => {
     await connection.create();
