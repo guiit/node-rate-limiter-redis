@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import { connection } from '../index';
-import { UserRole } from '@modules/users/infra/typeorm/entities/User';
+import { User, UserRole } from '@modules/users/infra/typeorm/entities/User';
 import { CreateUserService } from '@modules/users/services/user/CreateUserService';
 import UserRepository from '@modules/users/infra/typeorm/repositories/UserRepository';
 let userRepository: UserRepository, createUserService: CreateUserService;
@@ -53,13 +53,22 @@ describe('Should validate create user service', () => {
     await createUserService.execute(data);
     expect(findByCpfSpy).not.toHaveBeenCalled();
   });
-  test('Should return user values returned by create method', async () => {
+  test('Should return user with correct values', async () => {
     const createSpyOn = jest.spyOn(userRepository, 'create');
     const data = Object.assign({}, userSchema, {
       email: 'another_email',
       cpf: '12345678912345'
     });
     const user = await createUserService.execute(data);
-    expect(user).toEqual(await createSpyOn.mock.results[0].value);
+
+    const result = Object.assign({}, await createSpyOn.mock.results[0].value, {
+      email: 'another_email',
+      cpf: '12345678912345',
+      name: 'any_name',
+      password: expect.anything(),
+      user_type: UserRole.ADMIN
+    });
+
+    expect(user).toEqual(result);
   });
 });
