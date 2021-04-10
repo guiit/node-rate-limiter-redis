@@ -5,11 +5,10 @@ import { Request, Response, NextFunction } from 'express';
 import { JsonWebTokenError } from 'jsonwebtoken';
 import { QueryFailedError } from 'typeorm';
 
-export default function (
+export function errorHandling(
   error: Error,
   request: Request,
   response: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) {
   console.error(error);

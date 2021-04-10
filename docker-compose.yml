@@ -12,6 +12,14 @@ services:
       - .env
     networks:
       - postgres
+  redis:
+    restart: always
+    image: redis:latest
+    ports:
+      - '${REDIS_PORT}:6379'
+    volumes:
+      - ./config/redis.conf:/redis.conf
+    command: ['redis-server', '/redis.conf']
 
 networks:
   postgres:
