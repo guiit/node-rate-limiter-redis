@@ -1,11 +1,7 @@
 import { getRepository, Repository } from 'typeorm';
 import IUserRepository from '@modules/users/repositories/IUserRepository';
 import { User } from '@modules/users/infra/typeorm/entities/User';
-import {
-  ICreateUserDTO,
-  IGetUserDTO,
-  IListUsersDTO
-} from '@modules/users/dtos/IUserDTO';
+import { ICreateUser, IListUser } from '@modules/users/dtos/IUserDTO';
 
 export default class UserRepository implements IUserRepository {
   private ormRepository: Repository<User>;
@@ -14,48 +10,34 @@ export default class UserRepository implements IUserRepository {
     this.ormRepository = getRepository(User);
   }
 
-  public async create(data: ICreateUserDTO): Promise<User> {
-    const userInstance = this.ormRepository.create(data);
-    const user = await this.ormRepository.save(userInstance);
-
-    return user;
+  async create(body: ICreateUser): Promise<boolean> {
+    const userInstance = this.ormRepository.create(body);
+    return (await this.ormRepository.save(userInstance)) ? true : false;
   }
 
-  public async update(userEntity: User): Promise<User> {
-    const user = await this.ormRepository.save(userEntity);
-
-    return user;
+  async find(query: IListUser): Promise<User[]> {
+    return await this.ormRepository.find(query);
   }
 
-  public async delete(userEntity: User): Promise<User> {
-    const user = await this.ormRepository.remove(userEntity);
-
-    return user;
+  async findByEmail(email: string): Promise<User | undefined> {
+    return await this.ormRepository.findOne({ email });
   }
 
-  public async findOne({ user_id }: IGetUserDTO): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne(user_id);
-
-    return user;
+  async findByCpf(cpf: string): Promise<User | undefined> {
+    return await this.ormRepository.findOne({ cpf });
   }
 
-  public async findByCpf(cpf: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne({ cpf });
-
-    return user;
+  async findOneOrFail(id: string): Promise<User> {
+    return await this.ormRepository.findOneOrFail(id);
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne(
-      { email },
-      { select: ['user_id', 'password'] }
-    );
-
-    return user;
+  async update(user: User): Promise<boolean> {
+    return (await this.ormRepository.save(user)) ? true : false;
   }
-  public async findAll(query: IListUsersDTO): Promise<User[]> {
-    const users = await this.ormRepository.find(query);
 
-    return users;
+  async delete(user_id: string): Promise<boolean> {
+    return (await this.ormRepository.delete({ user_id })).affected
+      ? true
+      : false;
   }
 }

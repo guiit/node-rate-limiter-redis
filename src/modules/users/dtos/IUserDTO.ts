@@ -1,12 +1,6 @@
-export {
-  ICreateUserDTO,
-  IUpdateUserDTO,
-  IGetUserDTO,
-  IListUsersDTO,
-  ISignInUserDTO
-};
+export { ICreateUser, IUpdateUser, IListUser, ISignInUser };
 
-interface ICreateUserDTO {
+interface ICreateUser {
   name: string;
   phone?: string;
   cpf?: string;
@@ -16,7 +10,7 @@ interface ICreateUserDTO {
   is_active?: boolean;
 }
 
-interface IUpdateUserDTO {
+interface IUpdateUser {
   name?: string;
   phone?: string;
   cpf?: string;
@@ -26,16 +20,12 @@ interface IUpdateUserDTO {
   is_active?: boolean;
 }
 
-interface IGetUserDTO {
-  user_id: string;
-}
-
-interface IListUsersDTO {
+interface IListUser {
   take?: number;
   skip?: number;
 }
 
-interface ISignInUserDTO {
+interface ISignInUser {
   email: string;
   password: string;
 }
