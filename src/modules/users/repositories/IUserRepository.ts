@@ -1,16 +1,9 @@
 import { User } from '@modules/users/infra/typeorm/entities/User';
-import {
-  ICreateUserDTO,
-  IGetUserDTO,
-  IListUsersDTO
-} from '@modules/users/dtos/IUserDTO';
+import { IListUser, ICreateUser } from '@modules/users/dtos/IUserDTO';
+import { IBase } from '@shared/repositories/IBaseRepository';
 
-export default interface IUserRepository {
-  create(data: ICreateUserDTO): Promise<User>;
-  update(userEntity: User): Promise<User>;
-  delete(userEntity: User): Promise<User>;
-  findOne({ user_id }: IGetUserDTO): Promise<User | undefined>;
-  findByCpf(cpf: string): Promise<User | undefined>;
+export default interface IUserRepository extends IBase<User, ICreateUser> {
+  find(query: IListUser): Promise<User[]>;
   findByEmail(email: string): Promise<User | undefined>;
-  findAll(query: IListUsersDTO): Promise<User[]>;
+  findByCpf(cpf: string): Promise<User | undefined>;
 }
