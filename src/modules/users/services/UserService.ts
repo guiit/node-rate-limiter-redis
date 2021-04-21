@@ -23,7 +23,6 @@ export default class UserService {
   ) {}
 
   async create(data: ICreateUser): Promise<boolean> {
-    console.log('ijk');
     const emailExists = await this.userRepository.findByEmail(data.email);
     if (emailExists)
       throw new AppError('E-mail already belongs to another user!');
