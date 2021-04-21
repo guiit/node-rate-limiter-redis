@@ -12,8 +12,6 @@ export function errorHandling(
   response: Response,
   next: NextFunction
 ) {
-  console.error();
-
   console.error(error);
 
   if (error instanceof AppError) {
